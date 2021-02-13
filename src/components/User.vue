@@ -6,6 +6,9 @@
 <script>
 	export default {
 		name: "User",
-		mounted() {},
+		mounted() {
+			console.log(this.$store.getters.user);
+			this.$store.dispatch("getUser");
+		},
 	};
 </script>

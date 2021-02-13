@@ -1,5 +1,4 @@
-import User from '../../rest/user'
-import axios from 'axios'
+import http from '../../services/api/apiClient';
 
 export default {
     state:{
@@ -7,18 +6,20 @@ export default {
         user:'',
     },
     getters:{
-
+        user(state){
+            return state.user;
+        }
     },
     mutations:{
-        SET_ALL(state,user){
-            state.user =  user;
+        SET_USER(state,user){
+            state.user = user;
         }
     },
     actions:{
-        getAll( { commit } ){
-            const user = new User(axios);
-            user.getAll().then((response)=>{
-                commit('SET_ALL',response.data);
+        getUser( {commit} ){
+            http.get().then((response)=>{
+                console.log(response.data);
+                commit('SET_USER',response.data);
             })
         }
     }
