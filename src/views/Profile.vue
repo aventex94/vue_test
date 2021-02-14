@@ -69,11 +69,11 @@ export default {
         this.form = this.$store.getters.user;
     },
     methods: {
-        ...mapActions(["updateUser", "startLoading", "stopLoading"]),
+        ...mapActions(["updateProfile", "startLoading", "stopLoading"]),
         update() {
             window.event.preventDefault();
             this.startLoading();
-            this.updateUser(this.form)
+            this.updateProfile(this.form)
                 .then(() => {
                     this.success = true;
                 })

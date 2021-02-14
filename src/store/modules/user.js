@@ -28,7 +28,7 @@ export default {
                     commit("SET_USER", payload.user);
                 })
         },
-        async updateUser({ commit }, data) {
+        async updateProfile({ commit }, data) {
             return await axios.put('/user', formData(data))
                 .then((response) => {
                     commit("SET_USER", response.data);
