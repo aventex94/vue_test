@@ -6,14 +6,24 @@ import auth from './modules/auth'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-    state: {},
+    state: {
+        loading: false
+    },
     getters: {},
-    mutations: {},
+    mutations: {
+        START_LOADING(state) {
+            state.loading = true
+        },
+        STOP_LOADING(state) {
+            state.loading = false;
+        },
+    },
     actions: {},
     plugins: [createPersistedState()],
     modules: {
         auth
-    }
+    },
+    http: "hola"
 })
 
 export default store;

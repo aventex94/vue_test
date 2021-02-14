@@ -1,7 +1,7 @@
 <template>
     <b-container>
         <b-row class="justify-content-md-center">
-            <b-col cols="5">
+            <b-col col md="5" lg="5" sm="10">
                 <b-alert v-model="error" variant="danger" dismissible>
                     Error al iniciar sesión.
                 </b-alert>

@@ -1,36 +1,36 @@
 <template>
-    <div id="app">
-        <span v-if="isLoggedIn">
-            <a @click="logout" href="">Logout</a>
-        </span>
+    <div>
+        <Header />
+        <div class="vld-parent">
+            <loading
+                v-if="loading"
+                :active="loading"
+                :loader="'dots'"
+                :height="100"
+                :width="100"
+                :color="'primary'"
+                lock-scroll
+            ></loading>
+        </div>
+
         <router-view></router-view>
     </div>
 </template>
 
 <script>
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
+import Header from "./components/Header.vue";
+import { mapState } from "vuex";
 export default {
     name: "App",
-    computed: {
-        isLoggedIn: function () {
-            return this.$store.getters.isAuth;
-        },
-    },
-    methods: {
-        async logout() {
-            await this.$store.dispatch("logout");
-            location.href = process.env.BASE_URL;
-        },
-    },
+    components: { Header, Loading },
+    computed: mapState(["loading"]),
 };
 </script>
 
 <style>
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
 }
 </style>

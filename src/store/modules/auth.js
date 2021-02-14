@@ -19,13 +19,15 @@ export default {
         },
     },
     actions: {
-        async loginUser({ dispatch }, data) {
+        async loginUser({ dispatch, commit }, data) {
+            commit('START_LOADING')
             return await axios.post('/login', data)
                 .then((response) => {
-                    dispatch("setToken", response.data.token);
+                    dispatch("setToken", response.data.token)
+                    commit('STOP_LOADING')
                 })
         },
-        async logout({ dispatch }) {
+        logout({ dispatch }) {
             dispatch('clean')
         },
         setToken({ commit }, token) {
