@@ -48,9 +48,10 @@ export default {
         };
     },
     methods: {
-        ...mapActions(["loginUser"]),
+        ...mapActions(["loginUser", "startLoading", "stopLoading"]),
         login() {
             window.event.preventDefault();
+            this.startLoading();
             this.loginUser(this.form)
                 .then(() => {
                     location.href = process.env.BASE_URL;
@@ -58,7 +59,8 @@ export default {
                 .catch((e) => {
                     console.log(e);
                     this.error = true;
-                });
+                })
+                .finally(() => this.stopLoading());
         },
     },
 };

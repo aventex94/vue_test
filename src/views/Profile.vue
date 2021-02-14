@@ -11,7 +11,7 @@
                 <b-card>
                     <b-form @submit="update">
                         <b-form-group id="mis-datos">
-                            <label for="username">Username:</label>
+                            <label for="username">Usuario:</label>
                             <b-form-input
                                 id="username"
                                 v-model="form.username"
@@ -69,16 +69,18 @@ export default {
         this.form = this.$store.getters.user;
     },
     methods: {
-        ...mapActions(["updateUser"]),
+        ...mapActions(["updateUser", "startLoading", "stopLoading"]),
         update() {
             window.event.preventDefault();
+            this.startLoading();
             this.updateUser(this.form)
                 .then(() => {
                     this.success = true;
                 })
                 .catch(() => {
                     this.error = true;
-                });
+                })
+                .finally(() => this.stopLoading());
         },
     },
 };

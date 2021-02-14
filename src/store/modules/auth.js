@@ -20,32 +20,26 @@ export default {
         },
     },
     actions: {
-        async loginUser({ dispatch, commit }, data) {
-            commit('START_LOADING')
+        async loginUser({ commit }, data) {
             return await axios.post('/login', formData(data))
                 .then((response) => {
-                    dispatch("setToken", response.data.token)
-                }).finally(() => {
-                    commit('STOP_LOADING')
+                    commit("SET_TOKEN", response.data.token);
+                    let payload = jwt_decode(response.data.token);
+                    commit("SET_USER", payload.user);
                 })
         },
         async updateUser({ commit }, data) {
-            commit('START_LOADING')
-            return await axios.post('/test', formData(data))
+            return await axios.put('/user', formData(data))
                 .then((response) => {
                     commit("SET_USER", response.data);
-                }).finally(() => {
-                    commit('STOP_LOADING')
                 })
+        },
+        async createUser(data) {
+            return await axios.post('/user', formData(data))
         },
         logout({ commit }) {
             commit('SET_USER', null)
             commit('SET_TOKEN', null)
-        },
-        setToken({ commit }, token) {
-            commit("SET_TOKEN", token);
-            let payload = jwt_decode(token);
-            commit("SET_USER", payload.user);
         }
     }
 }

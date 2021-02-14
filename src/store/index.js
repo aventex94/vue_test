@@ -11,14 +11,18 @@ const store = new Vuex.Store({
     },
     getters: {},
     mutations: {
-        START_LOADING(state) {
-            state.loading = true
+        SWITCH_LOADING(state, newValue) {
+            state.loading = newValue;
+        }
+    },
+    actions: {
+        startLoading({ commit }) {
+            commit('SWITCH_LOADING', true);
         },
-        STOP_LOADING(state) {
-            state.loading = false;
+        stopLoading({ commit }) {
+            commit('SWITCH_LOADING', false);
         },
     },
-    actions: {},
     plugins: [createPersistedState()],
     modules: {
         auth

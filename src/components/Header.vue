@@ -1,7 +1,7 @@
 <template>
     <div id="header">
         <b-navbar toggleable="lg" type="dark" variant="primary">
-            <b-navbar-brand :to="{ name: 'Home' }">Home</b-navbar-brand>
+            <b-navbar-brand :to="{ name: 'Home' }">Inicio</b-navbar-brand>
             <b-navbar-toggle
                 target="nav-collapse"
                 v-if="user"
@@ -17,7 +17,7 @@
                             {{ user.username }}
                         </template>
                         <b-dropdown-item :to="{ name: 'Profile' }"
-                            >Profile</b-dropdown-item
+                            >Perfil</b-dropdown-item
                         >
                         <b-dropdown-item href="" @click="logout"
                             >Cerrar sesión</b-dropdown-item
