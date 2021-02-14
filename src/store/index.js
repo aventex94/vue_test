@@ -22,8 +22,7 @@ const store = new Vuex.Store({
     plugins: [createPersistedState()],
     modules: {
         auth
-    },
-    http: "hola"
+    }
 })
 
 export default store;

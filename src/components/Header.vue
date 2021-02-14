@@ -1,7 +1,7 @@
 <template>
     <div id="header">
         <b-navbar toggleable="lg" type="dark" variant="primary">
-            <b-navbar-brand href="#">Home</b-navbar-brand>
+            <b-navbar-brand :to="{ name: 'Home' }">Home</b-navbar-brand>
             <b-navbar-toggle
                 target="nav-collapse"
                 v-if="user"
@@ -16,7 +16,9 @@
                             <b-icon-person> </b-icon-person>
                             {{ user.username }}
                         </template>
-                        <b-dropdown-item href="#">Perfil</b-dropdown-item>
+                        <b-dropdown-item :to="{ name: 'Profile' }"
+                            >Profile</b-dropdown-item
+                        >
                         <b-dropdown-item href="" @click="logout"
                             >Cerrar sesión</b-dropdown-item
                         >
@@ -48,5 +50,8 @@ export default {
 <style>
 #header {
     margin-bottom: 3rem;
+}
+b-dropdown-item {
+    text-decoration: none;
 }
 </style>

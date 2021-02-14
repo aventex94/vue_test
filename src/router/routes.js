@@ -1,6 +1,6 @@
 import Home from '../views/Home'
 import Login from '../views/Login'
-
+import Profile from '../views/Profile'
 const routes = [
     {
         path: '/',
@@ -13,6 +13,12 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login
+    },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile,
+        meta: { requiresAuth: true },
     },
     { path: '*', redirect: { name: 'Home' } },
 ]

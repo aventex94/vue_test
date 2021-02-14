@@ -1,4 +1,5 @@
 import axios from 'axios'
+import formData from '../../helpers/formHelper.js';
 import jwt_decode from "jwt-decode";
 export default {
     state: {
@@ -21,23 +22,30 @@ export default {
     actions: {
         async loginUser({ dispatch, commit }, data) {
             commit('START_LOADING')
-            return await axios.post('/login', data)
+            return await axios.post('/login', formData(data))
                 .then((response) => {
                     dispatch("setToken", response.data.token)
+                }).finally(() => {
                     commit('STOP_LOADING')
                 })
         },
-        logout({ dispatch }) {
-            dispatch('clean')
+        async updateUser({ commit }, data) {
+            commit('START_LOADING')
+            return await axios.post('/test', formData(data))
+                .then((response) => {
+                    commit("SET_USER", response.data);
+                }).finally(() => {
+                    commit('STOP_LOADING')
+                })
+        },
+        logout({ commit }) {
+            commit('SET_USER', null)
+            commit('SET_TOKEN', null)
         },
         setToken({ commit }, token) {
             commit("SET_TOKEN", token);
             let payload = jwt_decode(token);
             commit("SET_USER", payload.user);
-        },
-        clean({ commit }) {
-            commit('SET_USER', null)
-            commit('SET_TOKEN', null)
         }
     }
 }
