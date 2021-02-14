@@ -1,4 +1,5 @@
 import axios from 'axios'
+import jwt_decode from "jwt-decode";
 export default {
     state: {
         user: undefined,
@@ -10,10 +11,10 @@ export default {
         isAuth: state => !!state.token
     },
     mutations: {
-        user(state, newValue) {
+        SET_USER(state, newValue) {
             state.user = newValue;
         },
-        token(state, newValue) {
+        SET_TOKEN(state, newValue) {
             state.token = newValue;
         },
     },
@@ -28,13 +29,13 @@ export default {
             dispatch('clean')
         },
         setToken({ commit }, token) {
-            commit("token", token);
-            let user = "asdasd"; // Se decodea el jwt para armar el usuario
-            commit("user", user);
+            commit("SET_TOKEN", token);
+            let payload = jwt_decode(token);
+            commit("SET_USER", payload.user);
         },
         clean({ commit }) {
-            commit('user', null)
-            commit('token', null)
+            commit('SET_USER', null)
+            commit('SET_TOKEN', null)
         }
     }
 }
