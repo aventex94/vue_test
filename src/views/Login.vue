@@ -2,8 +2,8 @@
     <b-container>
         <b-row class="justify-content-md-center">
             <b-col col md="5" lg="5" sm="10">
-                <b-alert v-model="error" variant="danger" dismissible>
-                    Error al iniciar sesión.
+                <b-alert v-model="hasError" variant="danger" dismissible>
+                    {{ error }}
                 </b-alert>
                 <b-card>
                     <b-form @submit="login">
@@ -44,7 +44,7 @@ export default {
                 username: "",
                 password: "",
             },
-            error: false,
+            error: "",
         };
     },
     methods: {
@@ -57,11 +57,15 @@ export default {
                     location.href = process.env.BASE_URL;
                 })
                 .catch((e) => {
-                    console.log(e);
-                    this.error = true;
+                    this.error = e.response.data.mensaje;
                 })
                 .finally(() => this.stopLoading());
         },
     },
+    computed: {
+        hasError(){
+            return this.error != ''
+        }
+    }
 };
 </script>
