@@ -35,7 +35,7 @@ export default {
     name: "Header",
     computed: {
         ...mapState({
-            user: (state) => state.auth.user,
+            user: (state) => state.user.user,
         }),
     },
     methods: {

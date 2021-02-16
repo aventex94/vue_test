@@ -1,5 +1,4 @@
 import axios from 'axios'
-import formData from '../../helpers/formHelper.js';
 import jwt_decode from "jwt-decode";
 export default {
     state: {
@@ -21,21 +20,21 @@ export default {
     },
     actions: {
         async loginUser({ commit }, data) {
-            return await axios.post('/login', formData(data))
+            return await axios.post('/login', data)
                 .then((response) => {
                     commit("SET_TOKEN", response.data.token);
                     let payload = jwt_decode(response.data.token);
-                    commit("SET_USER", payload.user);
+                    commit("SET_USER", payload);
                 })
         },
-        async updateProfile({ commit }, data) {
-            return await axios.put('/user', formData(data))
+        async updateProfile({ state, commit }, data) {
+            await axios.put(`/user/${state.user.id}`, data)
                 .then((response) => {
                     commit("SET_USER", response.data);
                 })
         },
         async createUser(data) {
-            return await axios.post('/user', formData(data))
+            return await axios.post('/user', data)
         },
         logout({ commit }) {
             commit('SET_USER', null)

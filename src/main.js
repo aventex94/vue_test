@@ -15,6 +15,7 @@ Vue.config.productionTip = false
 axios.defaults.baseURL = process.env.VUE_APP_API_URL
 axios.defaults.headers['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers['Authorization'] = `Bearer ${store.getters.token}`;
+axios.defaults.headers['Content-Type'] = "application/json";
 
 new Vue({
   render: h => h(App),
