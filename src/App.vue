@@ -1,24 +1,19 @@
 <template>
-	<div id="app">
-		<router-link to="/"></router-link>
-		<router-view></router-view>
-	</div>
+	<Base />
 </template>
 
 <script>
+	import Base from "./components/Base";
 	export default {
 		name: "App",
-		components: {},
+
+		components: {
+			Base,
+		},
+
+		data: () => ({
+			//
+		}),
 	};
 </script>
-
-<style>
-	#app {
-		font-family: Avenir, Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-		margin-top: 60px;
-	}
-</style>
+<style media="screen"></style>
