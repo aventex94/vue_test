@@ -3,12 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
-import './assets/scss/app.scss'
-
-
-Vue.use(BootstrapVue)
-Vue.use(BootstrapVueIcons)
+import vuetify from './plugins/vuetify.js'
 
 Vue.config.productionTip = false
 
@@ -19,6 +14,7 @@ axios.defaults.headers['Content-Type'] = "application/json";
 
 new Vue({
   render: h => h(App),
+  vuetify,
   router,
-  store,
+  store
 }).$mount('#app')

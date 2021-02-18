@@ -1,71 +1,121 @@
 <template>
-    <b-container>
-        <b-row class="justify-content-md-center">
-            <b-col col md="5" lg="5" sm="10">
-                <b-alert v-model="hasError" variant="danger" dismissible>
-                    {{ error }}
-                </b-alert>
-                <b-card>
-                    <b-form @submit="login">
-                        <b-form-group id="login" label="Iniciar sesión">
-                            <b-form-input
-                                id="username"
-                                v-model="form.username"
-                                type="text"
-                                placeholder="Usuario"
-                                required
-                            ></b-form-input
-                            ><br />
-                            <b-form-input
-                                id="password"
-                                v-model="form.password"
-                                type="password"
-                                placeholder="Contraseña"
-                                required
-                            ></b-form-input>
-                        </b-form-group>
+    <v-layout align-content-center justify-center mt-6 v-if="!user">
+        <v-row
+            ><v-col
+                :md="4"
+                :lg="4"
+                :offset-md="4"
+                :offset-lg="4"
+                :sm="12"
+                :xs="12"
+                :align="'center'"
+            >
+                <v-card class="py-6 px-10">
+                    <v-icon class="mx-auto" color="indigo" size="50"
+                        >mdi-account-circle</v-icon
+                    >
+                    <v-card-title class="mx-auto">
+                        <span class="mx-auto"> Iniciar sesión</span>
+                    </v-card-title>
+                    <form @submit="login">
+                        <v-text-field
+                            v-model="form.username"
+                            :error-messages="usernameErrors"
+                            label="Nombre de usuario"
+                            @input="$v.form.username.$touch()"
+                            @blur="$v.form.username.$touch()"
+                            outlined
+                        ></v-text-field>
+                        <v-text-field
+                            v-model="form.password"
+                            :error-messages="passwordErrors"
+                            label="Contraseña"
+                            type="password"
+                            @input="$v.form.password.$touch()"
+                            @blur="$v.form.password.$touch()"
+                            outlined
+                        ></v-text-field>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
 
-                        <b-button type="submit" variant="primary"
-                            >Entrar</b-button
-                        >
-                    </b-form>
-                </b-card></b-col
-            ></b-row
+                            <v-btn type="submit"> Entrar </v-btn>
+                        </v-card-actions>
+                    </form></v-card
+                ><v-alert border="bottom" color="red" dark v-if="hasErrorLogin">
+                    {{ errorLogin }}
+                </v-alert></v-col
+            ></v-row
         >
-    </b-container>
+    </v-layout>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { validationMixin } from "vuelidate";
+import { required } from "vuelidate/lib/validators";
+import { mapActions, mapState } from "vuex";
 export default {
     name: "Login",
+    mixins: [validationMixin],
+
+    validations: {
+        form: {
+            username: { required },
+            password: { required },
+        },
+    },
     data() {
         return {
             form: {
                 username: "",
                 password: "",
             },
-            error: "",
+
+            errorLogin: "",
         };
     },
     methods: {
         ...mapActions(["loginUser", "startLoading", "stopLoading"]),
         login() {
             window.event.preventDefault();
-            this.startLoading();
-            this.loginUser(this.form)
-                .then(() => {
-                    location.href = process.env.BASE_URL;
-                })
-                .catch((e) => {
-                    this.error = e.response.data.mensaje;
-                })
-                .finally(() => this.stopLoading());
+            this.errorLogin = "";
+            this.$v.$touch();
+            if (!this.$v.$invalid) {
+                this.startLoading();
+                this.loginUser(this.form)
+                    .then(() => {
+                        window.location.href = process.env.BASE_URL;
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        this.errorLogin = e.response.data.mensaje;
+                    })
+                    .finally(() => this.stopLoading());
+            }
         },
     },
     computed: {
-        hasError(){
-            return this.error != ''
-        }
-    }
+        ...mapState({
+            user: (state) => state.user.user,
+        }),
+        hasError() {
+            return this.error != "";
+        },
+        usernameErrors() {
+            const errors = [];
+            if (!this.$v.form.username.$dirty) return errors;
+            !this.$v.form.username.required &&
+                errors.push("Ingrese nombre de usuario");
+            return errors;
+        },
+        passwordErrors() {
+            const errors = [];
+            if (!this.$v.form.password.$dirty) return errors;
+            !this.$v.form.password.required &&
+                errors.push("Ingrese una contraseña");
+            return errors;
+        },
+        hasErrorLogin() {
+            return this.errorLogin != "";
+        },
+    },
 };
 </script>

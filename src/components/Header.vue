@@ -1,43 +1,31 @@
 <template>
-    <div id="header">
-        <b-navbar toggleable="lg" type="dark" variant="primary">
-            <b-navbar-brand :to="{ name: 'Home' }">Inicio</b-navbar-brand>
-            <b-navbar-toggle
-                target="nav-collapse"
-                v-if="user"
-            ></b-navbar-toggle>
-            <b-collapse id="nav-collapse" is-nav>
-                <!-- Right aligned nav items -->
-                <b-navbar-nav class="ml-auto" v-if="user">
-                    <b-nav-item-dropdown right>
-                        <!-- Using 'button-content' slot -->
-
-                        <template #button-content>
-                            <b-icon-person> </b-icon-person>
-                            {{ user.username }}
-                        </template>
-                        <b-dropdown-item :to="{ name: 'Profile' }"
-                            >Perfil</b-dropdown-item
-                        >
-                        <b-dropdown-item href="" @click="logout"
-                            >Cerrar sesión</b-dropdown-item
-                        >
-                    </b-nav-item-dropdown>
-                </b-navbar-nav>
-            </b-collapse>
-        </b-navbar>
-    </div>
+    <v-app-bar app clipped-left>
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-spacer></v-spacer>
+        <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">                
+                <v-avatar color="indigo">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                        <v-icon color="white">mdi-account-circle</v-icon>
+                    </v-btn></v-avatar
+                >
+            </template>
+            <v-list>
+                <v-list-item :to="{ name: 'Perfil' }">
+                    <v-list-item-title> Perfil </v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="logout">
+                    <v-list-item-title> Cerrar sesión </v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+    </v-app-bar>
 </template>
 
 <script>
-import { mapState } from "vuex";
 export default {
     name: "Header",
-    computed: {
-        ...mapState({
-            user: (state) => state.user.user,
-        }),
-    },
+    props: ["user"],
     methods: {
         async logout() {
             await this.$store.dispatch("logout");
@@ -48,10 +36,4 @@ export default {
 </script>
 
 <style>
-#header {
-    margin-bottom: 3rem;
-}
-b-dropdown-item {
-    text-decoration: none;
-}
 </style>
